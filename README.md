@@ -39,10 +39,27 @@ with no server to run and no database to host.
 The trade-offs — no transactions, auto-typed cells, a sandboxed iframe, a per-script URL
 callable by anyone who has it — shaped most of the design decisions below.
 
+## Languages and stack
+
+| Layer | What | Why |
+|---|---|---|
+| Server | JavaScript on the Apps Script V8 runtime, one file | runs inside Google Workspace; no hosting |
+| Client | Plain HTML / CSS / JavaScript, no framework, no bundler | must be readable and pasteable by a non-developer |
+| Data | Google Sheets, 14 sheets, no formulas | visible, auditable, backed up by Drive |
+| Runtime dependencies | Google Fonts only | nothing to install or update |
+| Field tools | PowerShell 5.1 (SNMP inventory scanner, read-only directory export, its AST auditor) | runs on any Windows PC without installing anything |
+| Developer tooling | Node.js: preview builder, headless-browser regression suites, Word manual generator | optional; never shipped |
+
+See [docs/PRINCIPLES.md](docs/PRINCIPLES.md) for the reasoning and
+[docs/CODE-EXCERPTS.md](docs/CODE-EXCERPTS.md) for short, sanitised excerpts of the parts
+that matter.
+
 ## Documents
 
 | File | Contents |
 |---|---|
+| [docs/PRINCIPLES.md](docs/PRINCIPLES.md) | Ten design principles and the incidents that produced them |
+| [docs/CODE-EXCERPTS.md](docs/CODE-EXCERPTS.md) | Sanitised excerpts: RPC wrapper, guards, trigger check, cell helpers, locks, rate limits, hash history, cascades, derived columns, the allow-list auditor |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | The four-file layout, request flow, client state model, hash-based navigation inside the Apps Script iframe |
 | [docs/DATA-MODEL.md](docs/DATA-MODEL.md) | The 14 sheets, their columns, which columns are keys, which are derived, and how renames cascade |
 | [docs/SECURITY.md](docs/SECURITY.md) | Threat model for a "anyone with the URL can call any public function" deployment, OTP login, sessions, rate limits, trigger guards, formula injection |
